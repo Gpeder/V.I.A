@@ -8,6 +8,7 @@ class AppColors {
   static const Color gray100 = Color(0xFFDEE0E3);
   static const Color gray200 = Color(0xFF808080);
   static const Color destructive = Color(0xFFDC2828);
+  static const Color success = Color(0xFF2E7D32);
 
   static final shadowSoft = [
     BoxShadow(
