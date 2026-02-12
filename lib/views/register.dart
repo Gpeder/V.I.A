@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:via/controller/register_controller.dart';
 import 'package:via/theme/color.dart';
 import 'package:via/theme/images.dart';
 import 'package:via/widgets/main_textfield.dart';
@@ -12,58 +13,43 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  late final RegisterController controller;
 
-  bool isObscureText = true;
-  bool isObscureTextConfirm = true;
-  bool isLoading = false;
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  bool _hasMinLength(String value) => value.length >= 8;
-  bool _hasUppercase(String value) => RegExp(r'[A-Z]').hasMatch(value);
-  bool _hasNumber(String value) => RegExp(r'\d').hasMatch(value);
-  bool _hasSpecialChar(String value) =>
-      RegExp(r'[!@#$%^&*(),.?":{}|<>_\-\\[\]/+=~`]').hasMatch(value);
-
-  String _passwordValidationMessage(String value) {
-    final List<String> missing = [];
-
-    if (!_hasMinLength(value)) {
-      missing.add('8 caracteres');
-    }
-    if (!_hasUppercase(value)) {
-      missing.add('1 letra maiuscula');
-    }
-    if (!_hasNumber(value)) {
-      missing.add('1 numero');
-    }
-    if (!_hasSpecialChar(value)) {
-      missing.add('1 caractere especial');
-    }
-
-    return 'Senha precisa conter ${missing.join(', ')}.';
+  @override
+  void initState() {
+    super.initState();
+    controller = RegisterController()..addListener(_onControllerChanged);
   }
 
-  String? _validateEmail(String? value) {
-    final String email = (value ?? '').trim();
-    if (email.isEmpty) {
-      return 'Campo obrigatorio';
+  void _onControllerChanged() {
+    if (mounted) {
+      setState(() {});
     }
-    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(email)) {
-      return 'E-mail invalido';
-    }
-    return null;
-  }
-  bool _passwordsMatch() {
-    return passwordController.text == confirmPasswordController.text;
   }
 
+  @override
+  void dispose() {
+    controller.removeListener(_onControllerChanged);
+    controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _onRegister() async {
+    final String? errorMessage = await controller.register();
+
+    if (!mounted) {
+      return;
+    }
+
+    if (errorMessage != null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(errorMessage)));
+      return;
+    }
+
+    Navigator.pushNamed(context, '/home');
+  }
 
   Widget _passwordRuleItem({required String label, required bool isValid}) {
     return Padding(
@@ -90,72 +76,8 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  void toggleObscureText() {
-    setState(() {
-      isObscureText = !isObscureText;
-    });
-  }
-
-  void toggleObscureTextConfirm() {
-    setState(() {
-      isObscureTextConfirm = !isObscureTextConfirm;
-    });
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> register() async {
-    if (!(_formKey.currentState?.validate() ?? false)) {
-      return;
-    }
-
-    final String password = passwordController.text;
-
-    if (!_hasMinLength(password) ||
-        !_hasUppercase(password) ||
-        !_hasNumber(password) ||
-        !_hasSpecialChar(password)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_passwordValidationMessage(password))),
-      );
-      return;
-    }
-
-    if (passwordController.text != confirmPasswordController.text) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('As senhas nao coincidem')));
-      return;
-    }
-
-    setState(() {
-      isLoading = true;
-    });
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      isLoading = false;
-    });
-
-    Navigator.pushNamed(context, '/home');
-  }
-
   @override
   Widget build(BuildContext context) {
-    final String password = passwordController.text;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -170,7 +92,7 @@ class _RegisterState extends State<Register> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Form(
-          key: _formKey,
+          key: controller.formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -191,75 +113,83 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 30),
               MainTextField(
+                textInputAction: TextInputAction.next,
                 labelText: 'Nome completo',
                 hintText: 'Seu nome',
-                controller: nameController,
+                controller: controller.nameController,
               ),
               const SizedBox(height: 10),
               MainTextField(
+                textInputAction: TextInputAction.next,
                 labelText: 'E-mail',
                 hintText: 'Seu e-mail',
                 keyboardType: TextInputType.emailAddress,
-                controller: emailController,
-                validator: _validateEmail,
+                controller: controller.emailController,
+                validator: controller.validateEmail,
               ),
               const SizedBox(height: 10),
               MainTextField(
+                textInputAction: TextInputAction.next,
                 labelText: 'Senha',
                 hintText: 'Sua senha',
-                obscureText: isObscureText,
-                controller: passwordController,
-                onChanged: (_) => setState(() {}),
+                obscureText: controller.isObscureText,
+                controller: controller.passwordController,
+                onChanged: (_) => controller.onPasswordChanged(),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    isObscureText ? Icons.visibility : Icons.visibility_off,
+                    controller.isObscureText
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                   ),
-                  onPressed: toggleObscureText,
+                  onPressed: controller.toggleObscureText,
                 ),
               ),
               const SizedBox(height: 8),
               _passwordRuleItem(
                 label: 'Pelo menos 8 caracteres',
-                isValid: _hasMinLength(password),
+                isValid: controller.hasMinLength,
               ),
               const SizedBox(height: 4),
               _passwordRuleItem(
                 label: 'Pelo menos 1 letra maiuscula',
-                isValid: _hasUppercase(password),
+                isValid: controller.hasUppercase,
               ),
               const SizedBox(height: 4),
               _passwordRuleItem(
                 label: 'Pelo menos 1 numero',
-                isValid: _hasNumber(password),
+                isValid: controller.hasNumber,
               ),
               const SizedBox(height: 4),
               _passwordRuleItem(
                 label: 'Pelo menos 1 caractere especial',
-                isValid: _hasSpecialChar(password),
+                isValid: controller.hasSpecialChar,
               ),
               const SizedBox(height: 10),
               MainTextField(
+                textInputAction: TextInputAction.done,
                 labelText: 'Confirmar senha',
                 hintText: 'Confirme sua senha',
-                controller: confirmPasswordController,
+                controller: controller.confirmPasswordController,
                 suffixIcon: IconButton(
                   icon: Icon(
-                    isObscureTextConfirm
+                    controller.isObscureTextConfirm
                         ? Icons.visibility
                         : Icons.visibility_off,
                   ),
-                  onPressed: toggleObscureTextConfirm,
+                  onPressed: controller.toggleObscureTextConfirm,
                 ),
-                obscureText: isObscureTextConfirm,
+                obscureText: controller.isObscureTextConfirm,
               ),
               const SizedBox(height: 8),
-              _passwordRuleItem(label: 'Senhas não coincidem', isValid: _passwordsMatch()),
-
+              _passwordRuleItem(
+                label: 'Senhas nao coincidem',
+                isValid: controller.passwordsMatch,
+              ),
               const SizedBox(height: 30),
               MainButton(
                 label: 'Criar conta',
-                isLoading: isLoading,
-                onPressed: register,
+                isLoading: controller.isLoading,
+                onPressed: _onRegister,
                 width: double.infinity,
               ),
             ],
