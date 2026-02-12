@@ -81,7 +81,7 @@ class MainButton extends StatelessWidget {
           case MainButtonVariant.destructive:
             return BorderSide.none;
           case MainButtonVariant.outline:
-            return const BorderSide(color: AppColors.black, width: 1.2);
+            return const BorderSide(color: AppColors.gray200, width: 1);
         }
       }),
       overlayColor: WidgetStateProperty.resolveWith<Color>((states) {
