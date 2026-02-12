@@ -115,7 +115,9 @@ class _LoginState extends State<Login> {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/forgot');
+                  },
                   child: Text(
                     'Esqueci minha senha',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
