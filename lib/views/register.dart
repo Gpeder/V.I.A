@@ -97,7 +97,7 @@ class _RegisterState extends State<Register> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Image(image: AssetImage(AppImages.logoIcon), height: 120),
+              const Image(image: AssetImage(AppImages.logoIcon), height: 100),
               const SizedBox(height: 10),
               Text(
                 'Crie sua conta',

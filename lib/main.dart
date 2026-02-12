@@ -28,6 +28,15 @@ class Via extends StatelessWidget {
         primaryColor: AppColors.primary,
         textTheme: textTheme,
         chipTheme: chip(textTheme),
+
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            overlayColor: Colors.transparent,
+          ),
+        ),
         appBarTheme: AppBarTheme(
           scrolledUnderElevation: 0,
           backgroundColor: Colors.transparent,
