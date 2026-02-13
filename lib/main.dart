@@ -4,6 +4,7 @@ import 'package:via/theme/chip.dart';
 import 'package:via/theme/color.dart';
 import 'package:via/theme/text.dart';
 import 'package:via/views/forgot_accont.dart';
+import 'package:via/views/home.dart';
 import 'package:via/views/login.dart';
 import 'package:via/views/prev.login.dart';
 import 'package:via/views/register.dart';
@@ -52,6 +53,7 @@ class Via extends StatelessWidget {
         '/cadastro': (context) => const Register(),
         '/login': (context) => const Login(),
         '/forgot': (context) => const ForgotAccont(),
+        '/home': (context) => const HomePage(),
       },
     );
   }

@@ -65,7 +65,9 @@ class _ForgotAccontState extends State<ForgotAccont> {
             SizedBox(height: 20),
             MainButton(
               label: 'Enviar link',
-              onPressed: () {},
+              onPressed: () {
+                _handleLogin();
+              },
               width: double.infinity,
             ),
             SizedBox(height: 20),

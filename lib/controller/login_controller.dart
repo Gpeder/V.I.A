@@ -46,6 +46,11 @@ class LoginController extends ChangeNotifier {
 
     await Future.delayed(const Duration(seconds: 2));
 
+    Navigator.pushNamed(
+      formKey.currentContext!,
+      '/home',
+    );
+
     isLoading = false;
     notifyListeners();
 
