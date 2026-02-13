@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:via/theme/color.dart';
 
 enum MainSearchBarVariant { outline, filled, none }
@@ -114,7 +115,7 @@ class MainSearchBar extends StatelessWidget {
             padding: WidgetStatePropertyAll<EdgeInsetsGeometry?>(
               EdgeInsets.symmetric(horizontal: horizontalPadding),
             ),
-            leading: leading ?? const Icon(Icons.search),
+            leading: leading ?? const Icon(LucideIcons.search, size: 20, color: AppColors.gray200),
             trailing: trailing,
           ),
         ],

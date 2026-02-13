@@ -86,6 +86,8 @@ class _LoginState extends State<Login> {
                 ).textTheme.bodyMedium!.copyWith(color: AppColors.gray200),
               ),
               const SizedBox(height: 40),
+
+              //* Campo de e-mail
               MainTextField(
                 textInputAction: TextInputAction.next,
                 labelText: 'E-mail',
@@ -95,6 +97,8 @@ class _LoginState extends State<Login> {
                 validator: controller.validateEmail,
               ),
               const SizedBox(height: 20),
+
+              //* Campo de senha
               MainTextField(
                 textInputAction: TextInputAction.done,
                 labelText: 'Senha',

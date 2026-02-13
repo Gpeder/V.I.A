@@ -8,5 +8,6 @@ class AppImages {
 
   static const String logo = 'assets/logo.png';
   static const String logoHori = 'assets/logo-hori.png';
+  static const String logoHorizontal = 'assets/logo-horizontal.png';
   static const String logoIcon = 'assets/logo-icon.png';
 }

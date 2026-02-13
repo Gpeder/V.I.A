@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:via/components/home/appbar.dart';
+import 'package:via/components/home/filtercategories.dart';
+import 'package:via/components/home/volunteer_card.dart';
+import 'package:via/data/models/aplication_model.dart';
 import 'package:via/theme/images.dart';
 
 class HomePage extends StatelessWidget {
@@ -7,12 +11,44 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Image(image: AssetImage(AppImages.logoIcon), height: 80),
-      ),
-      body: const Center(
-        child: Text('Bem-vindo à página inicial!'),
+      appBar: HomeAppBar(),
+      body: SingleChildScrollView(
+        padding: .symmetric(vertical: 20),
+        child: Column(
+          children: [
+            //* filto de seleção de categorias
+            FilterCategories(),
+            SizedBox(height: 20),
+
+            //* lista de cards de trabalhos voluntários
+            Padding(
+              padding: const .symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, index) => SizedBox(height: 16),
+                    itemBuilder: (context, index) {
+                      final opportunity = mockOpportunities[index];
+                      return VolunteerCard(
+                        title: opportunity.title,
+                        ong: opportunity.ong,
+                        category: opportunity.category.name,
+                        distance: '${opportunity.distance} km',
+                        time: opportunity.duration,
+                        image: opportunity.image,
+                        onPressed: () {},
+                      );
+                    },
+                    itemCount: mockOpportunities.length,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

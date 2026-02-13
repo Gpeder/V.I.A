@@ -17,7 +17,6 @@ class MainCard extends StatelessWidget {
     return Container(
       padding: padding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       width: double.infinity,
-      height: 200,
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.gray100, width: 0.3),
         color: backgroundColor ?? AppColors.white,
