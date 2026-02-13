@@ -3,7 +3,6 @@ import 'package:via/components/home/appbar.dart';
 import 'package:via/components/home/filtercategories.dart';
 import 'package:via/components/home/volunteer_card.dart';
 import 'package:via/data/models/aplication_model.dart';
-import 'package:via/theme/images.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

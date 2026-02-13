@@ -5,6 +5,7 @@ class AppImages {
   static const String meioAmbiente = 'assets/meio-ambiente.png';
   static const String saude = 'assets/saude.png';
   static const String social = 'assets/social.png';
+  static const String alimentacao = 'assets/alimentacao.png';
 
   static const String logo = 'assets/logo.png';
   static const String logoHori = 'assets/logo-hori.png';

@@ -49,6 +49,7 @@ class OpportunityModel {
       case CategoryId.children:
         return AppImages.social;
       case CategoryId.food:
+        return AppImages.alimentacao;
       case CategoryId.culture:
         return AppImages.geral;
     }

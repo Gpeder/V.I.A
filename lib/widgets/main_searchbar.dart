@@ -46,48 +46,50 @@ class MainSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle bodyLarge =
-        Theme.of(context).textTheme.bodyLarge ?? const TextStyle(fontSize: 16);
-    final TextStyle bodyMedium =
-        Theme.of(context).textTheme.bodyMedium ?? const TextStyle(fontSize: 14);
+    final TextStyle bodyLarge = Theme.of(
+      context,
+    ).textTheme.bodyLarge!.copyWith(color: AppColors.gray200);
+    final TextStyle bodyMedium = Theme.of(
+      context,
+    ).textTheme.bodyMedium!.copyWith(color: AppColors.gray200);
 
     final Color bgColor = filledColor ?? AppColors.gray100;
 
     final WidgetStateProperty<Color?> backgroundColor =
         WidgetStateProperty.resolveWith((states) {
-      if (states.contains(WidgetState.disabled)) {
-        return AppColors.gray100.withValues(alpha: 0.6);
-      }
-      return switch (variant) {
-        MainSearchBarVariant.outline => AppColors.white,
-        MainSearchBarVariant.filled => bgColor,
-        MainSearchBarVariant.none => Colors.transparent,
-      };
-    });
+          if (states.contains(WidgetState.disabled)) {
+            return AppColors.gray100.withValues(alpha: 0.6);
+          }
+          return switch (variant) {
+            MainSearchBarVariant.outline => AppColors.white,
+            MainSearchBarVariant.filled => bgColor,
+            MainSearchBarVariant.none => Colors.transparent,
+          };
+        });
 
     final WidgetStateProperty<BorderSide?> side =
         WidgetStateProperty.resolveWith((states) {
-      if (variant == MainSearchBarVariant.none) {
-        return BorderSide.none;
-      }
+          if (variant == MainSearchBarVariant.none) {
+            return BorderSide.none;
+          }
 
-      if (states.contains(WidgetState.disabled)) {
-        return const BorderSide(color: AppColors.gray100, width: 1);
-      }
+          if (states.contains(WidgetState.disabled)) {
+            return const BorderSide(color: AppColors.gray100, width: 1);
+          }
 
-      if (states.contains(WidgetState.focused)) {
-        return const BorderSide(color: AppColors.primary, width: 1);
-      }
+          if (states.contains(WidgetState.focused)) {
+            return const BorderSide(color: AppColors.primary, width: 1);
+          }
 
-      return const BorderSide(color: AppColors.gray100, width: 1);
-    });
+          return const BorderSide(color: AppColors.gray100, width: 1);
+        });
 
     final WidgetStateProperty<OutlinedBorder?> shape =
         WidgetStatePropertyAll<OutlinedBorder>(
-      RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-    );
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+          ),
+        );
 
     return SizedBox(
       width: width,
@@ -106,6 +108,10 @@ class MainSearchBar extends StatelessWidget {
             onSubmitted: onSubmitted,
             onTap: onTap,
             enabled: enabled,
+            constraints: const BoxConstraints(
+              minHeight: 45,
+              maxHeight: 45,
+            ),
             elevation: WidgetStatePropertyAll<double>(elevation),
             textStyle: WidgetStatePropertyAll<TextStyle?>(bodyLarge),
             hintStyle: WidgetStatePropertyAll<TextStyle?>(bodyMedium),
@@ -115,7 +121,13 @@ class MainSearchBar extends StatelessWidget {
             padding: WidgetStatePropertyAll<EdgeInsetsGeometry?>(
               EdgeInsets.symmetric(horizontal: horizontalPadding),
             ),
-            leading: leading ?? const Icon(LucideIcons.search, size: 20, color: AppColors.gray200),
+            leading:
+                leading ??
+                const Icon(
+                  LucideIcons.search,
+                  size: 20,
+                  color: AppColors.gray200,
+                ),
             trailing: trailing,
           ),
         ],

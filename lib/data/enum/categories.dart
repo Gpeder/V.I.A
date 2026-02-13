@@ -1,6 +1,7 @@
 enum Category {
   all,
   education,
+  food,
   health,
   environment,
   animals,
@@ -16,6 +17,8 @@ extension CategoryExtension on Category {
         return 'Todas';
       case Category.education:
         return '📚  Educação';
+      case Category.food:
+        return '🍎  Alimentação';
       case Category.health:
         return '👨‍⚕️  Saúde';
       case Category.environment:

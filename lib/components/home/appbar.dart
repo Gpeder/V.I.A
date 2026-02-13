@@ -37,7 +37,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           CircleAvatar(
             radius: 25,
-            backgroundColor: AppColors.primary,
+            backgroundColor: AppColors.primaryLight,
             child: Text(
               _getInitials(_defaultUserName),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -52,7 +52,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             iconSize: 24,
             style: IconButton.styleFrom(
               padding: .all(12),
-              backgroundColor: AppColors.primary,
+              backgroundColor: AppColors.primaryLight,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -71,7 +71,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
           child: MainSearchBar(
             variant: MainSearchBarVariant.filled,
-            hintText: 'Pesquisar por produtos, marcas e muito mais',
+            hintText: 'Buscar oportunidades',
             onChanged: (value) {},
           ),
         ),
